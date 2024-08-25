@@ -1,16 +1,16 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import ButtonComponent from './ButtonComponent';
-import CardComponent from './CardComponent';
+import CardComponent from './HomePage/CardComponent';
 import imageHomePage from '../assets/images/image-home-page.png';
 import image2HomePage from '../assets/images/image2-home-page.png';
-import BarComponent from './BarComponent';
+import BarComponent from './HomePage/BarComponent';
 import { UserOutlined, AreaChartOutlined, BulbOutlined, TeamOutlined, PaperClipOutlined } from '@ant-design/icons'
 
 function ContentHomePage() {
     return (
         <>
-            <div className="group-title-home-page h-screen flex flex-row items-center justify-center bg-gradient-to-bl from-sky-300 to-blue-900">
+            <div className="group-title-home-page h-screen w-full flex flex-row items-center justify-center bg-gradient-to-bl from-sky-300 to-blue-900">
                 <div className="text-white flex flex-col gap-y-5">
                     <p className="text-4xl font-bold text-center">
                         Quản lý và rút gọn link hiệu quả
@@ -21,11 +21,11 @@ function ContentHomePage() {
                     </p>
                     <div className="flex flex-row justify-center gap-x-5">
                         <ButtonComponent
-                            typeButton="primary"
+                            typeButton=""
                             content="Đăng nhập"
                         />
                         <ButtonComponent
-                            typeButton="primary"
+                            typeButton=""
                             content="Đăng ký"
                         />
                     </div>
