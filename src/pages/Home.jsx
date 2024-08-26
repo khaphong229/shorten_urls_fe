@@ -8,7 +8,7 @@ import ContentHomePage from '../components/ContentHomePage';
 function Home() {
     return (
         <>
-            <HeaderComponent modeTheme='light'/>
+            <HeaderComponent modeTheme="light" selectedPage="1" />
             <ContentHomePage />
             <FooterComponent />
         </>

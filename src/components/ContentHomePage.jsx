@@ -5,7 +5,13 @@ import CardComponent from './HomePage/CardComponent';
 import imageHomePage from '../assets/images/image-home-page.png';
 import image2HomePage from '../assets/images/image2-home-page.png';
 import BarComponent from './HomePage/BarComponent';
-import { UserOutlined, AreaChartOutlined, BulbOutlined, TeamOutlined, PaperClipOutlined } from '@ant-design/icons'
+import {
+    UserOutlined,
+    AreaChartOutlined,
+    BulbOutlined,
+    TeamOutlined,
+    PaperClipOutlined,
+} from '@ant-design/icons';
 
 function ContentHomePage() {
     return (
@@ -15,19 +21,13 @@ function ContentHomePage() {
                     <p className="text-4xl font-bold text-center">
                         Quản lý và rút gọn link hiệu quả
                     </p>
-                    <p className='text-center italic px-12'>
+                    <p className="text-center italic px-12">
                         Quản lý, điều hướng các liên kết ra các trang web rút
                         gọn, lên kế hoạch và điều chỉnh lượng truy cập
                     </p>
                     <div className="flex flex-row justify-center gap-x-5">
-                        <ButtonComponent
-                            typeButton=""
-                            content="Đăng nhập"
-                        />
-                        <ButtonComponent
-                            typeButton=""
-                            content="Đăng ký"
-                        />
+                        <ButtonComponent typeButton="" content="Đăng nhập" />
+                        <ButtonComponent typeButton="" content="Đăng ký" />
                     </div>
                 </div>
                 <div className="w-6/12">
@@ -65,22 +65,53 @@ function ContentHomePage() {
                     />
                 </div>
             </div>
-            <div className='group-analyze-feature h-fit flex flex-col items-center mb-20'>
-                <p className='text-4xl font-bold mb-20'>Tại sao chọn chúng tôi</p>
-                <div className='flex flex-row w-full px-20'>
-                    <div className='basis-1/2'>
-                        <img src={image2HomePage} alt="image2-home-page" className='w-4/5'/>
+            <div className="group-analyze-feature h-fit flex flex-col items-center mb-20">
+                <p className="text-4xl font-bold mb-20">
+                    Tại sao chọn chúng tôi
+                </p>
+                <div className="flex flex-row w-full px-20">
+                    <div className="basis-1/2">
+                        <img
+                            src={image2HomePage}
+                            alt="image2-home-page"
+                            className="w-4/5"
+                        />
                     </div>
-                    <div className='basis-1/2'>
-                        <p className='mb-5'>Chúng tôi không chỉ là công cụ quản lý và điều phối liên kết. Chúng tôi là đối tác của bạn trong việc xây dựng trang web tốt hơn. Với kinh nghiệm và kiến thức sâu rộ về SEO và quản lý liên kết, chúng tôi cam kết đem lại giá trị thực sự cho dự án của bạn.</p>
-                        <BarComponent color='purple' icon={<UserOutlined/>} content='Hướng Tiếp Cận Dựa trên Người Dùng'/>
-                        <BarComponent color='red' icon={<AreaChartOutlined/>} content='Thông Tin Hiệu Suất Toàn Diện' />
-                        <BarComponent color='green' icon={<BulbOutlined />} content='Giải Pháp Tùy Chỉnh' />
-                        <BarComponent color='blue' icon={<TeamOutlined />} content='Đối Tác và Hỗ Trợ' />
-                        <BarComponent color='yellow' icon={<PaperClipOutlined />} content='Chuyên Môn về Quản lý Liên Kết và SEO' />
+                    <div className="basis-1/2">
+                        <p className="mb-5">
+                            Chúng tôi không chỉ là công cụ quản lý và điều phối
+                            liên kết. Chúng tôi là đối tác của bạn trong việc
+                            xây dựng trang web tốt hơn. Với kinh nghiệm và kiến
+                            thức sâu rộ về SEO và quản lý liên kết, chúng tôi
+                            cam kết đem lại giá trị thực sự cho dự án của bạn.
+                        </p>
+                        <BarComponent
+                            color="purple"
+                            icon={<UserOutlined />}
+                            content="Hướng Tiếp Cận Dựa trên Người Dùng"
+                        />
+                        <BarComponent
+                            color="red"
+                            icon={<AreaChartOutlined />}
+                            content="Thông Tin Hiệu Suất Toàn Diện"
+                        />
+                        <BarComponent
+                            color="green"
+                            icon={<BulbOutlined />}
+                            content="Giải Pháp Tùy Chỉnh"
+                        />
+                        <BarComponent
+                            color="blue"
+                            icon={<TeamOutlined />}
+                            content="Đối Tác và Hỗ Trợ"
+                        />
+                        <BarComponent
+                            color="yellow"
+                            icon={<PaperClipOutlined />}
+                            content="Chuyên Môn về Quản lý Liên Kết và SEO"
+                        />
                     </div>
                 </div>
-
             </div>
         </>
     );

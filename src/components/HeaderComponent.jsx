@@ -8,18 +8,17 @@ const { Header } = Layout;
 const items = [
     {
         key: 1,
-        label: <Link to='/'>Trang chủ</Link>,
+        label: <Link to="/">Trang chủ</Link>,
     },
     {
         key: 2,
-        label: <Link to='/login'>Đăng nhập</Link>,
+        label: <Link to="/login">Đăng nhập</Link>,
     },
     {
         key: 3,
-        label: <Link to='/register'>Đăng ký</Link>,
+        label: <Link to="/register">Đăng ký</Link>,
     },
 ];
-
 
 const HeaderComponent = ({ modeTheme, selectedPage }) => {
     const [scrolled, setScrolled] = useState(false);
@@ -33,11 +32,10 @@ const HeaderComponent = ({ modeTheme, selectedPage }) => {
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
-        }
+        };
     }, [scrolled]);
 
-    
-    let colorLogo = modeTheme === 'light' ? 'black' : 'white'
+    let colorLogo = modeTheme === 'light' ? 'black' : 'white';
 
     return (
         <Header
@@ -53,15 +51,17 @@ const HeaderComponent = ({ modeTheme, selectedPage }) => {
                 boxShadow: scrolled ? '0 2px 8px rgba(0, 0, 0, 0.15)' : 'none',
             }}
         >
-            <div className={`demo-logo ml-10 text-${colorLogo}`}>ProLink.vip</div>
+            <div className={`demo-logo ml-10 text-${colorLogo}`}>
+                ProLink.vip
+            </div>
             <Menu
                 theme={modeTheme}
                 mode="horizontal"
                 defaultSelectedKeys={[selectedPage]}
                 items={items}
-                style={{ 
-                    flex: 1, 
-                    minWidth: 0, 
+                style={{
+                    flex: 1,
+                    minWidth: 0,
                     justifyContent: 'center',
                     background: modeTheme === 'light' ? '#ffffff' : '#000',
                     borderBottom: 'none',

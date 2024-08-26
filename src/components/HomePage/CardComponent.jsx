@@ -1,7 +1,6 @@
 import React from 'react';
 
 function CardComponent({ title, color, content }) {
-
     const colorClasses = {
         purple: {
             bg: 'bg-purple-50',
@@ -20,7 +19,6 @@ function CardComponent({ title, color, content }) {
             border: 'border-green-200',
         },
     };
-
 
     const { bg, border } = colorClasses[color] || colorClasses['blue'];
 
