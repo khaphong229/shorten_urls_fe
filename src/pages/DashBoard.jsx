@@ -1,13 +1,21 @@
-import React from 'react'
-import GeneralComponent from '../components/GeneralComponent'
+import React, { useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import BoxComponent from '../components/BoxComponent';
+
 function DashBoard() {
-  return (
-    <>
-        <GeneralComponent>
-            <h1>hello</h1>
-        </GeneralComponent>
-    </>
-  )
+    const { updateBreadcrumb } = useOutletContext();
+
+    useEffect(() => {
+        updateBreadcrumb([]);
+    }, [updateBreadcrumb]);
+
+    return (
+        <>
+            <BoxComponent>
+                <h1>Dashboard</h1>
+            </BoxComponent>
+        </>
+    );
 }
 
-export default DashBoard
+export default DashBoard;

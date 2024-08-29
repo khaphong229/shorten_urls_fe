@@ -41,3 +41,9 @@ Xây dựng các component chính: Bắt đầu với Navbar, Home, Dashboard, v
 Kết nối với backend: Sử dụng Axios hoặc Fetch API để gọi các API đã phát triển ở backend.
 Quản lý trạng thái người dùng: Sử dụng Redux hoặc Context API để quản lý thông tin xác thực và dữ liệu người dùng.
 Styling: Sử dụng CSS hoặc CSS-in-JS để tạo giao diện đẹp mắt cho ứng dụng.
+
+
+//Kien thuc trong du an
+dung axios tao instance va intercepter 
+chia chung layout
+useOutletContext

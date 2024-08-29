@@ -7,26 +7,27 @@ import DashBoard from './pages/DashBoard';
 import ApiLink from './pages/ApiLink';
 import ShortLink from './pages/ShortLink';
 import Quick from './pages/Quick';
-import ChangePassword from './pages/ChangePassword'
-import Profile from './pages/Profile'
+import ChangePassword from './pages/ChangePassword';
+import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
+import DashboardLayout from './components/GeneralComponent';
 
 function App() {
     return (
-        <>
-            <main>
-                <Routes>
-                    <Route path="/" element={<Home />}></Route>
-                    <Route path="/login" element={<Login />}></Route>
-                    <Route path="/register" element={<Register />}></Route>
-                    <Route path="/dashboard" element={<DashBoard />}></Route>
-                    <Route path="/link" element={<ApiLink />}></Route>
-                    <Route path="/shortlink" element={<ShortLink />}></Route>
-                    <Route path="/quick" element={<Quick />}></Route>
-                    <Route path="/change-password" element={<ChangePassword />}></Route>
-                    <Route path="/profile" element={<Profile />}></Route>
-                </Routes>
-            </main>
-        </>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<DashboardLayout />}>
+                <Route path="dashboard" element={<DashBoard />} />
+                <Route path="link" element={<ApiLink />} />
+                <Route path="shortlink" element={<ShortLink />} />
+                <Route path="quick" element={<Quick />} />
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="profile" element={<Profile />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+        </Routes>
     );
 }
 

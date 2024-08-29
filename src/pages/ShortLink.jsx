@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 function ShortLink() {
-  return (
-    <div>
-      
-    </div>
-  )
+    const { updateBreadcrumb } = useOutletContext();
+
+    useEffect(() => {
+        updateBreadcrumb([
+            {
+                route: '/shortlink',
+                name: 'Quản lý liên kết',
+            },
+        ]);
+    }, [updateBreadcrumb]);
+
+    return <div>short link</div>;
 }
 
-export default ShortLink
+export default ShortLink;

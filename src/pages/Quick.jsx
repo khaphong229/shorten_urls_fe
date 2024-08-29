@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 function Quick() {
-  return (
-    <div>
-      
-    </div>
-  )
+    const { updateBreadcrumb } = useOutletContext();
+
+    useEffect(() => {
+        updateBreadcrumb([
+            {
+                route: '/quick',
+                name: 'Quick link',
+            },
+        ]);
+    }, [updateBreadcrumb]);
+
+    return <div>short link</div>;
 }
 
-export default Quick
+export default Quick;

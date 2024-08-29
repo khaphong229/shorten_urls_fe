@@ -9,6 +9,7 @@ function FooterComponent() {
             style={{
                 textAlign: 'center',
                 fontFamily: 'Segoe UI',
+                background: '#fff',
             }}
         >
             ProLink.vip ©{new Date().getFullYear()} Quản lý mọi liên kết, kết

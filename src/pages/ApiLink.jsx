@@ -1,15 +1,19 @@
-import React from 'react'
-import GeneralComponent from '../components/GeneralComponent'
+import React, { useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
+
 function ApiLink() {
-  return (
-    <>
-      <GeneralComponent>
-        <div>
-          short link
-        </div>
-      </GeneralComponent>
-    </>
-  )
+    const { updateBreadcrumb } = useOutletContext();
+
+    useEffect(() => {
+        updateBreadcrumb([
+            {
+                route: '/link',
+                name: 'Danh sách web quản lý api link',
+            },
+        ]);
+    }, [updateBreadcrumb]);
+
+    return <div>short link</div>;
 }
 
-export default ApiLink
+export default ApiLink;
