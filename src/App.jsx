@@ -11,6 +11,7 @@ import ChangePassword from './pages/ChangePassword';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import DashboardLayout from './components/GeneralComponent';
+import AddApiLink from './pages/AddApiLink';
 
 function App() {
     return (
@@ -20,7 +21,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<DashboardLayout />}>
                 <Route path="dashboard" element={<DashBoard />} />
-                <Route path="link" element={<ApiLink />} />
+                <Route path="/link" element={<ApiLink />}>
+                    <Route path='add' element={<AddApiLink/>}/>
+                </Route>
                 <Route path="shortlink" element={<ShortLink />} />
                 <Route path="quick" element={<Quick />} />
                 <Route path="change-password" element={<ChangePassword />} />
