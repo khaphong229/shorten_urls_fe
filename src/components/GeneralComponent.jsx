@@ -9,7 +9,16 @@ import {
     ThunderboltOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
+import {
+    Avatar,
+    Breadcrumb,
+    Button,
+    Dropdown,
+    Layout,
+    Menu,
+    Tag,
+    theme,
+} from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 
 const { Content, Footer, Header, Sider } = Layout;
@@ -20,6 +29,15 @@ function getItem(label, key, icon, children) {
         icon,
         children,
         label,
+    };
+}
+
+function getProfile(label, key, icon, children) {
+    return {
+        label,
+        key,
+        icon,
+        children,
     };
 }
 
@@ -40,8 +58,13 @@ const items = [
     getItem('Người dùng', 'sub1', <UserOutlined />, [
         getItem(<Link to="/change-password">Đổi mật khẩu</Link>, '6'),
         getItem(<Link to="/profile">Thông tin</Link>, '7'),
-        getItem(<Link to="/">Đăng xuất</Link>, '8'),
     ]),
+];
+
+const listProfile = [
+    getProfile('username', '1'),
+    getProfile(<Link to="/profile">Thông tin</Link>, '2'),
+    getProfile(<Link to="/">Đăng xuất</Link>, '3'),
 ];
 
 const DashboardLayout = () => {
@@ -100,25 +123,45 @@ const DashboardLayout = () => {
                         padding: 0,
                         background: colorBorderBg,
                         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
                     }}
                 >
-                    <Button
-                        type="text"
-                        icon={
-                            collapsed ? (
-                                <MenuUnfoldOutlined />
-                            ) : (
-                                <MenuFoldOutlined />
-                            )
-                        }
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                    {currentPageName}
+                    <div>
+                        <Button
+                            type="text"
+                            icon={
+                                collapsed ? (
+                                    <MenuUnfoldOutlined />
+                                ) : (
+                                    <MenuFoldOutlined />
+                                )
+                            }
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                fontSize: '16px',
+                                width: 64,
+                                height: 64,
+                            }}
+                        />
+                        {currentPageName}
+                    </div>
+                    <div>
+                        <Dropdown
+                            menu={{ items: listProfile }}
+                            placement="bottomRight"
+                            className="float-right mr-12"
+                        >
+                            <Tag color="blue" className="py-1 px-4">
+                                <Avatar
+                                    src="https://api.dicebear.com/7.x/miniavs/svg?seed=1"
+                                    className="mr-4"
+                                />
+                                Tài khoản
+                            </Tag>
+                        </Dropdown>
+                    </div>
                 </Header>
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
@@ -129,16 +172,6 @@ const DashboardLayout = () => {
                         ))}
                     </Breadcrumb>
                     <Outlet context={{ updateBreadcrumb }} />
-                    {/* <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-              boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-            }}
-          >
-          </div> */}
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     ProLink.vip ©{new Date().getFullYear()} Quản lý mọi liên

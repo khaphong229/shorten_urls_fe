@@ -25,7 +25,7 @@ function Login() {
             if (data.status < 400) {
                 localStorage.setItem('accessToken', data.data.accessToken);
                 notification.success({
-                    message: 'Đăng nhập thành công',
+                    message: 'Thành công',
                     description: data.data.message,
                     duration: 2,
                 });
@@ -36,13 +36,13 @@ function Login() {
                 }, 500);
             } else {
                 notification.warning({
-                    message: 'Đăng nhập thất bại',
+                    message: 'Thất bại',
                     description: data.response.data.message,
                 });
             }
         } catch (error) {
             notification.error({
-                message: 'Đăng nhập thất bại',
+                message: 'Lỗi',
                 description: 'Lỗi trong khi đăng nhập tài khoản',
             });
         }
@@ -50,7 +50,6 @@ function Login() {
 
     return (
         <>
-            <HeaderComponent modeTheme="light" selectedPage="2" />
             {loading ? (
                 <Spin
                     indicator={
@@ -64,81 +63,85 @@ function Login() {
                     }}
                 />
             ) : (
-                <div className="h-screen flex justify-center items-center bg-gradient-to-r from-blue-400 to-purple-600">
-                    <Form
-                        name="login"
-                        initialValues={{ remember: true }}
-                        onFinish={onFinish}
-                        style={{
-                            minWidth: 500,
-                            backgroundColor: 'white',
-                            padding: '70px',
-                            borderRadius: '10px',
-                        }}
-                    >
-                        <h1 className="text-center mb-12 text-3xl">
-                            Đăng nhập
-                        </h1>
-                        <Form.Item
-                            name="email"
-                            rules={[
-                                {
-                                    type: 'email',
-                                    message: 'The input is not valid Email!',
-                                },
-                                {
-                                    required: true,
-                                    message: 'Please input your Email!',
-                                },
-                            ]}
+                <>
+                    <HeaderComponent modeTheme="light" selectedPage="2" />
+                    <div className="h-screen flex justify-center items-center bg-gradient-to-r from-blue-400 to-purple-600">
+                        <Form
+                            name="login"
+                            initialValues={{ remember: true }}
+                            onFinish={onFinish}
+                            style={{
+                                minWidth: 500,
+                                backgroundColor: 'white',
+                                padding: '70px',
+                                borderRadius: '10px',
+                            }}
                         >
-                            <Input
-                                prefix={<UserOutlined />}
-                                placeholder="Email"
-                            />
-                        </Form.Item>
-                        <Form.Item
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your Password!',
-                                },
-                            ]}
-                        >
-                            <Input
-                                prefix={<LockOutlined />}
-                                type="password"
-                                placeholder="Password"
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <Flex justify="space-between" align="center">
-                                <Form.Item
-                                    name="remember"
-                                    valuePropName="checked"
-                                    noStyle
-                                >
-                                    <Checkbox>Remember me</Checkbox>
-                                </Form.Item>
-                                <a href="">Forgot password</a>
-                            </Flex>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button block type="primary" htmlType="submit">
-                                Log in
-                            </Button>
-                        </Form.Item>
-                        <div>
-                            or{' '}
-                            <Link to="/register" className="pt-4">
-                                Register now!
-                            </Link>
-                        </div>
-                    </Form>
-                </div>
+                            <h1 className="text-center mb-12 text-3xl">
+                                Đăng nhập
+                            </h1>
+                            <Form.Item
+                                name="email"
+                                rules={[
+                                    {
+                                        type: 'email',
+                                        message:
+                                            'The input is not valid Email!',
+                                    },
+                                    {
+                                        required: true,
+                                        message: 'Please input your Email!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    prefix={<UserOutlined />}
+                                    placeholder="Email"
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your Password!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    prefix={<LockOutlined />}
+                                    type="password"
+                                    placeholder="Password"
+                                />
+                            </Form.Item>
+                            <Form.Item>
+                                <Flex justify="space-between" align="center">
+                                    <Form.Item
+                                        name="remember"
+                                        valuePropName="checked"
+                                        noStyle
+                                    >
+                                        <Checkbox>Remember me</Checkbox>
+                                    </Form.Item>
+                                    <a href="">Forgot password</a>
+                                </Flex>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button block type="primary" htmlType="submit">
+                                    Log in
+                                </Button>
+                            </Form.Item>
+                            <div>
+                                or{' '}
+                                <Link to="/register" className="pt-4">
+                                    Register now!
+                                </Link>
+                            </div>
+                        </Form>
+                    </div>
+                    <FooterComponent />
+                </>
             )}
-            <FooterComponent />
         </>
     );
 }

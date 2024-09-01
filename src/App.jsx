@@ -22,7 +22,7 @@ function App() {
             <Route path="/" element={<DashboardLayout />}>
                 <Route path="dashboard" element={<DashBoard />} />
                 <Route path="/link" element={<ApiLink />}>
-                    <Route path='add' element={<AddApiLink/>}/>
+                    <Route path="add" element={<AddApiLink />} />
                 </Route>
                 <Route path="shortlink" element={<ShortLink />} />
                 <Route path="quick" element={<Quick />} />

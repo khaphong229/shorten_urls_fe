@@ -56,7 +56,7 @@ function Register() {
 
             if (status < 400) {
                 notification.success({
-                    message: 'Đăng ký thành công',
+                    message: 'Thành công',
                     description: data.data.message,
                 });
                 return navigate('/login');
@@ -71,14 +71,14 @@ function Register() {
                     });
                 }
                 notification.warning({
-                    message: 'Đăng ký thất bại',
+                    message: 'Thất bại',
                     description: message,
                     duration: 2,
                 });
             }
         } catch (error) {
             notification.error({
-                message: 'Đăng ký thất bại',
+                message: 'Lỗi',
                 description: 'Lỗi trong quá trình đăng ký tài khoản.',
             });
         }
