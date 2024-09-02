@@ -58,6 +58,8 @@ function Register() {
                 notification.success({
                     message: 'Thành công',
                     description: data.data.message,
+                    duration: 2,
+                    placement: 'top',
                 });
                 return navigate('/login');
             } else {
@@ -74,12 +76,15 @@ function Register() {
                     message: 'Thất bại',
                     description: message,
                     duration: 2,
+                    placement: 'top',
                 });
             }
         } catch (error) {
             notification.error({
                 message: 'Lỗi',
                 description: 'Lỗi trong quá trình đăng ký tài khoản.',
+                duration: 2,
+                placement: 'top',
             });
         }
     };

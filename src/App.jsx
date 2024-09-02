@@ -12,6 +12,7 @@ import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import DashboardLayout from './components/GeneralComponent';
 import AddApiLink from './pages/AddApiLink';
+import UpdateApiLink from './pages/UpdateApiLink';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="dashboard" element={<DashBoard />} />
                 <Route path="/link" element={<ApiLink />}>
                     <Route path="add" element={<AddApiLink />} />
+                    <Route path="edit/:id" element={<UpdateApiLink />} />
                 </Route>
                 <Route path="shortlink" element={<ShortLink />} />
                 <Route path="quick" element={<Quick />} />

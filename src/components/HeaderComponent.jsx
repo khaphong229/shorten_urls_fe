@@ -30,6 +30,7 @@ const HeaderComponent = ({ modeTheme, selectedPage }) => {
             }
         };
         window.addEventListener('scroll', handleScroll);
+        //cleanup function 
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };

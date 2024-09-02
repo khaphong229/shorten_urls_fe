@@ -28,6 +28,7 @@ function Login() {
                     message: 'Thành công',
                     description: data.data.message,
                     duration: 2,
+                    placement: 'top',
                 });
                 setLoading(true);
                 setTimeout(() => {
@@ -38,23 +39,29 @@ function Login() {
                 notification.warning({
                     message: 'Thất bại',
                     description: data.response.data.message,
+                    duration: 2,
+                    placement: 'top',
                 });
             }
         } catch (error) {
             notification.error({
                 message: 'Lỗi',
                 description: 'Lỗi trong khi đăng nhập tài khoản',
+                duration: 2,
+                placement: 'top',
             });
         }
+    };
+
+    const passRegister = () => {
+        navigate('/register');
     };
 
     return (
         <>
             {loading ? (
                 <Spin
-                    indicator={
-                        <LoadingOutlined style={{ fontSize: 50 }} spin />
-                    }
+                    tip="Đang đăng nhập..."
                     style={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -133,7 +140,11 @@ function Login() {
                             </Form.Item>
                             <div>
                                 or{' '}
-                                <Link to="/register" className="pt-4">
+                                <Link
+                                    to="/register"
+                                    className="pt-4"
+                                    onClick={passRegister}
+                                >
                                     Register now!
                                 </Link>
                             </div>

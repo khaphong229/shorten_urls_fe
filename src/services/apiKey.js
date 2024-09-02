@@ -36,3 +36,30 @@ export const editStatusApiKey = async (route, data) => {
         return error;
     }
 };
+
+export const updateApiKey = async (id, data) => {
+    try {
+        const res = await instance.patch(`/apikeys/${id}`, data);
+        return res;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const getApiKeyById = async (id) => {
+    try {
+        const res = await instance.get(`/apikeys/${id}`);
+        return res;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const searchApiKey = async (name) => {
+    try {
+        const res = await instance.get(`apikeys/filter?name_api=${name}`);
+        return res;
+    } catch (error) {
+        return error;
+    }
+}

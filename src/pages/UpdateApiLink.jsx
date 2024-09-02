@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext, useParams, useNavigate } from 'react-router-dom';
 import BoxComponent from '../components/BoxComponent';
 import { Form, Input, Button, Select, notification, Spin } from 'antd';
-import { createApiKey } from '../services/apiKey';
-import RichEditor from '../components/RichEditor';
+import TextArea from 'antd/es/input/TextArea';
+import { getApiKeyById, updateApiKey } from '../services/apiKey';
+import { LoadingOutlined } from '@ant-design/icons';
 
-function AddApiLink() {
+function UpdateApiLink() {
     const { updateBreadcrumb } = useOutletContext();
     const [form] = Form.useForm();
-    const [loading, setLoading] = useState(false);
-    const [editorContent, setEditorContent] = useState(null);
-    const navigate = useNavigate();    
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         updateBreadcrumb([
             {
@@ -18,29 +20,73 @@ function AddApiLink() {
                 name: 'Danh sách web quản lý api link',
             },
             {
-                route: '/link/add',
-                name: 'Thêm API Link',
+                route: `/link/edit/${id}`,
+                name: 'Cập nhật API Link',
             },
         ]);
-    }, [updateBreadcrumb]);
+    }, [updateBreadcrumb, id]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const res = await getApiKeyById(id);
+                if (res.data && res.data.success) {
+                    const apiData = res.data.data;
+                    form.setFieldsValue({
+                        url: apiData.api_key,
+                        maxViews: apiData.maximum_view,
+                        priority: apiData.priority,
+                        description: apiData.description,
+                        status: apiData.is_active.toString(),
+                    });
+
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 500);
+                } else {
+                    notification.error({
+                        message: 'Lỗi',
+                        description:
+                            'Không thể lấy dữ liệu API. Vui lòng thử lại.',
+                        duration: 2,
+                        placement: 'top',
+                    });
+                    setLoading(false);
+                }
+            } catch (error) {
+                notification.error({
+                    message: 'Lỗi',
+                    description:
+                        'Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng thử lại.',
+                    duration: 2,
+                    placement: 'top',
+                });
+                setLoading(false);
+            }
+        };
+
+        if (id) {
+            fetchData();
+        }
+    }, [id, form]);
 
     const onFinish = async (values) => {
-        const { url, maxViews, priority, status } = values;
+        const { url, maxViews, priority, description, status } = values;
         const data = {
             api_key: url,
             priority: priority,
             maximum_view: maxViews,
-            description: editorContent,
+            description: description,
             is_active: status === 'true',
         };
-        console.log(data);
-        setLoading(true);
         try {
-            const res = await createApiKey(data);
-            if (res.status < 400) {
+            setLoading(true);
+            const res = await updateApiKey(id, data);
+            if (res.data && res.data.success) {
                 notification.success({
                     message: 'Thành công',
-                    description: res.data.message,
+                    description: 'Cập nhật API thành công',
                     duration: 2,
                     placement: 'top',
                 });
@@ -48,7 +94,7 @@ function AddApiLink() {
             } else {
                 notification.warning({
                     message: 'Thất bại',
-                    description: res.response.data.message,
+                    description: res.data.message || 'Cập nhật API thất bại',
                     duration: 2,
                     placement: 'top',
                 });
@@ -56,7 +102,7 @@ function AddApiLink() {
         } catch (error) {
             notification.error({
                 message: 'Lỗi',
-                description: 'Vui lòng thử lại nhé',
+                description: 'Đã xảy ra lỗi khi cập nhật. Vui lòng thử lại.',
                 duration: 2,
                 placement: 'top',
             });
@@ -65,23 +111,15 @@ function AddApiLink() {
         }
     };
 
-    useEffect(() => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 500);
-    }, []);
-
     return (
         <BoxComponent>
             <Spin spinning={loading} tip="Đang xử lý...">
-                <h2 className="mb-5">Thêm API Link</h2>
+                <h2 className="mb-5">Cập nhật API Link</h2>
                 <Form
                     form={form}
-                    name="add_api_link"
+                    name="update_api_link"
                     onFinish={onFinish}
                     layout="vertical"
-                    initialValues={{ status: 'true' }}
                 >
                     <Form.Item
                         name="url"
@@ -89,7 +127,7 @@ function AddApiLink() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng nhập tên API!',
+                                message: 'Vui lòng nhập Link API!',
                             },
                         ]}
                     >
@@ -123,7 +161,7 @@ function AddApiLink() {
                     </Form.Item>
 
                     <Form.Item name="description" label="Mô tả">
-                        <RichEditor/>
+                        <TextArea placeholder="Mô tả cho API link" allowClear />
                     </Form.Item>
 
                     <Form.Item name="status" label="Trạng thái">
@@ -142,7 +180,7 @@ function AddApiLink() {
                             htmlType="submit"
                             style={{ width: '100%' }}
                         >
-                            Thêm API Link
+                            Cập nhật API Link
                         </Button>
                     </Form.Item>
                 </Form>
@@ -151,4 +189,4 @@ function AddApiLink() {
     );
 }
 
-export default AddApiLink;
+export default UpdateApiLink;

@@ -3,6 +3,7 @@ import {
     DesktopOutlined,
     GlobalOutlined,
     LinkOutlined,
+    LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     SendOutlined,
@@ -20,6 +21,7 @@ import {
     theme,
 } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
+
 
 const { Content, Footer, Header, Sider } = Layout;
 
@@ -61,10 +63,14 @@ const items = [
     ]),
 ];
 
+const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+}
+
 const listProfile = [
     getProfile('username', '1'),
-    getProfile(<Link to="/profile">Thông tin</Link>, '2'),
-    getProfile(<Link to="/">Đăng xuất</Link>, '3'),
+    getProfile(<Link to="/profile">Thông tin</Link>, '2', <UserOutlined />),
+    getProfile(<Link to="/" onClick={handleLogout}>Đăng xuất</Link>, '3', <LogoutOutlined />),
 ];
 
 const DashboardLayout = () => {

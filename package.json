@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@ckeditor/ckeditor5-react": "^9.0.0",
     "@eslint/js": "^9.9.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -23,6 +24,7 @@
     "antd": "^5.20.2",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.5",
+    "ckeditor5": "^43.0.0",
     "eslint": "^9.9.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
