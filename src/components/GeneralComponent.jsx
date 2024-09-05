@@ -15,15 +15,22 @@ import {
     Breadcrumb,
     Button,
     Dropdown,
+    Form,
+    Input,
     Layout,
     Menu,
+    message,
+    Modal,
+    notification,
+    Spin,
     Tag,
     theme,
 } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 
-
 const { Content, Footer, Header, Sider } = Layout;
+import { useAuth } from '../services/useAuth';
+import { createLink } from '../services/shorten';
 
 function getItem(label, key, icon, children) {
     return {
@@ -43,40 +50,22 @@ function getProfile(label, key, icon, children) {
     };
 }
 
-const items = [
-    getItem('Tạo liên kết nhanh', '1', <SendOutlined />),
-    getItem(
-        <Link to="/dashboard">Bảng điều khiển</Link>,
-        '2',
-        <DesktopOutlined />,
-    ),
-    getItem(<Link to="/link">Website rút gọn</Link>, '3', <GlobalOutlined />),
-    getItem(
-        <Link to="/shortlink">Quản lý liên kết</Link>,
-        '4',
-        <LinkOutlined />,
-    ),
-    getItem(<Link to="/quick">Quick link</Link>, '5', <ThunderboltOutlined />),
-    getItem('Người dùng', 'sub1', <UserOutlined />, [
-        getItem(<Link to="/change-password">Đổi mật khẩu</Link>, '6'),
-        getItem(<Link to="/profile">Thông tin</Link>, '7'),
-    ]),
-];
-
-const handleLogout = () => {
-    localStorage.removeItem('accessToken');
+function showNotification(type, mess, des) {
+    return notification[type]({
+        message: mess,
+        description: des,
+        duration: 2,
+        placement: 'top',
+    });
 }
-
-const listProfile = [
-    getProfile('username', '1'),
-    getProfile(<Link to="/profile">Thông tin</Link>, '2', <UserOutlined />),
-    getProfile(<Link to="/" onClick={handleLogout}>Đăng xuất</Link>, '3', <LogoutOutlined />),
-];
 
 const DashboardLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [breadcrumb, setBreadcrumb] = useState([]);
     const [currentPageName, setCurrentPageName] = useState('Bảng điều khiển');
+    const { logout } = useAuth();
+    const [form] = Form.useForm();
+    const [open, setOpen] = useState(false);
 
     const updateBreadcrumb = useCallback((newBreadcrumbs) => {
         setBreadcrumb([
@@ -98,6 +87,68 @@ const DashboardLayout = () => {
     } = theme.useToken();
 
     const logo = collapsed ? 'Pro' : 'ProLink.vip';
+
+    const listProfile = [
+        getProfile('username', '1'),
+        getProfile(<Link to="/profile">Thông tin</Link>, '2', <UserOutlined />),
+        getProfile(
+            <Link to="/" onClick={logout}>
+                Đăng xuất
+            </Link>,
+            '3',
+            <LogoutOutlined />,
+        ),
+    ];
+
+    const onCreate = async (values) => {
+        const { original_link, alias } = values;
+        const data = {
+            original_url: original_link,
+            alias: alias,
+        };
+        try {
+            const res = await createLink(data);
+            if (res.data.success) {
+                showNotification('success', 'Thành công', res.data.message);
+            } else {
+                showNotification('warning', 'Thất bại', res.data.message);
+            }
+        } catch (error) {
+            showNotification('error', 'Lỗi', 'Lỗi trong quá trình rút gọn');
+        }
+    };
+
+    const items = [
+        getItem(
+            <span onClick={() => setOpen(true)}>Tạo liên kết nhanh</span>,
+            '1',
+            <SendOutlined />,
+        ),
+        getItem(
+            <Link to="/dashboard">Bảng điều khiển</Link>,
+            '2',
+            <DesktopOutlined />,
+        ),
+        getItem(
+            <Link to="/link">Website rút gọn</Link>,
+            '3',
+            <GlobalOutlined />,
+        ),
+        getItem(
+            <Link to="/shortlink">Quản lý liên kết</Link>,
+            '4',
+            <LinkOutlined />,
+        ),
+        getItem(
+            <Link to="/quick">Quick link</Link>,
+            '5',
+            <ThunderboltOutlined />,
+        ),
+        getItem('Người dùng', 'sub1', <UserOutlined />, [
+            getItem(<Link to="/change-password">Đổi mật khẩu</Link>, '6'),
+            getItem(<Link to="/profile">Thông tin</Link>, '7'),
+        ]),
+    ];
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -184,6 +235,42 @@ const DashboardLayout = () => {
                     kết, kết trái từ Share Link.
                 </Footer>
             </Layout>
+            <Modal
+                open={open}
+                title="Tạo liên kết nhanh"
+                okText="Tạo"
+                cancelText="Hủy"
+                okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
+                onCancel={() => setOpen(false)}
+                destroyOnClose
+                modalRender={(dom) => (
+                    <Form
+                        layout="vertical"
+                        form={form}
+                        name="form_in_modal"
+                        initialValues={{ modifier: 'public' }}
+                        clearOnDestroy
+                        onFinish={(values) => onCreate(values)}
+                    >
+                        {dom}
+                    </Form>
+                )}
+            >
+                <Form.Item
+                    name="original_link"
+                    label="Liên kết gốc"
+                    rules={[{ required: true, message: 'Vui lòng nhập link' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    name="alias"
+                    label="Alias (Tùy chọn)"
+                    rules={[{ required: false }]}
+                >
+                    <Input />
+                </Form.Item>
+            </Modal>
         </Layout>
     );
 };

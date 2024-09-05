@@ -4,13 +4,14 @@ import BoxComponent from '../components/BoxComponent';
 import { Form, Input, Button, Select, notification, Spin } from 'antd';
 import { createApiKey } from '../services/apiKey';
 import RichEditor from '../components/RichEditor';
+import TextArea from 'antd/es/input/TextArea';
 
 function AddApiLink() {
     const { updateBreadcrumb } = useOutletContext();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [editorContent, setEditorContent] = useState(null);
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
     useEffect(() => {
         updateBreadcrumb([
             {
@@ -123,7 +124,8 @@ function AddApiLink() {
                     </Form.Item>
 
                     <Form.Item name="description" label="Mô tả">
-                        <RichEditor/>
+                        {/* <RichEditor/> */}
+                        <TextArea placeholder="Mô tả cho API link" allowClear />
                     </Form.Item>
 
                     <Form.Item name="status" label="Trạng thái">

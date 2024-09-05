@@ -6,14 +6,13 @@ import { login } from '../services/auth';
 import { useNavigate } from 'react-router-dom';
 import { LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Link from 'antd/es/typography/Link';
-
-const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
+import { useAuth } from '../services/useAuth';
 
 function Login() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login: authLogin } = useAuth();
+
     const onFinish = async (values) => {
         const { email, password } = values;
         const userData = {
@@ -21,20 +20,17 @@ function Login() {
             password,
         };
         try {
+            setLoading(true);
             const data = await login(userData);
             if (data.status < 400) {
-                localStorage.setItem('accessToken', data.data.accessToken);
+                authLogin(data.data.accessToken); // Use the login function from useAuth
                 notification.success({
                     message: 'Thành công',
                     description: data.data.message,
                     duration: 2,
                     placement: 'top',
                 });
-                setLoading(true);
-                setTimeout(() => {
-                    setLoading(false);
-                    navigate('/dashboard');
-                }, 500);
+                navigate('/dashboard');
             } else {
                 notification.warning({
                     message: 'Thất bại',
@@ -50,6 +46,8 @@ function Login() {
                 duration: 2,
                 placement: 'top',
             });
+        } finally {
+            setLoading(false);
         }
     };
 

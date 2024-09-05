@@ -62,4 +62,4 @@ export const searchApiKey = async (name) => {
     } catch (error) {
         return error;
     }
-}
+};
