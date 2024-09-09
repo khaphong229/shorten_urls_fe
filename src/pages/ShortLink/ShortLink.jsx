@@ -19,16 +19,16 @@ import {
     Form,
 } from 'antd';
 import { BulbOutlined, CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import BoxComponent from '../components/BoxComponent';
+import BoxComponent from '../../components/shared/BoxComponent';
 import {
     createLink,
     deleteShortLink,
     getAllShortLink,
     getShortLinkById,
     searchShortLink,
-} from '../services/shorten'
-import { displayStatus } from '../services/notification';
-import ShortenLink from '../components/ShortenLink';
+} from '../../services/shorten'
+import { displayStatus } from '../../services/notification';
+import ShortenLink from '../../components/modals/ShortenLink';
 const { Search } = Input;
 
 function ShortLink() {

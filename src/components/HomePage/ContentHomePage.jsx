@@ -1,9 +1,9 @@
 import React from 'react';
-import ButtonComponent from './ButtonComponent';
-import CardComponent from './HomePage/CardComponent';
-import imageHomePage from '../assets/images/image-home-page.png';
-import image2HomePage from '../assets/images/image2-home-page.png';
-import BarComponent from './HomePage/BarComponent';
+import ButtonComponent from '../shared/ButtonComponent';
+import CardComponent from '../HomePage/CardComponent';
+import imageHomePage from '../../assets/images/image-home-page.png';
+import image2HomePage from '../../assets/images/image2-home-page.png';
+import BarComponent from '../HomePage/BarComponent';
 import {
     UserOutlined,
     AreaChartOutlined,

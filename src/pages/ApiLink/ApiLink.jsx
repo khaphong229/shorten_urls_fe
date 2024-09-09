@@ -18,14 +18,14 @@ import {
     Popconfirm,
 } from 'antd';
 import { BulbOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import BoxComponent from '../components/BoxComponent';
+import BoxComponent from '../../components/shared/BoxComponent';
 import {
     getAllApiKey,
     editStatusApiKey,
     deleteApiKey,
     searchApiKey,
-} from '../services/apiKey';
-import {displayStatus} from '../services/notification'
+} from '../../services/apiKey';
+import {displayStatus} from '../../services/notification'
 const { Search } = Input;
 
 function ApiLink() {

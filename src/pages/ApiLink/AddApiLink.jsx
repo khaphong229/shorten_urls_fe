@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
-import BoxComponent from '../components/BoxComponent';
+import BoxComponent from '../../components/shared/BoxComponent';
 import { Form, Input, Button, Select, notification, Spin } from 'antd';
-import { createApiKey } from '../services/apiKey';
-import RichEditor from '../components/RichEditor';
+import { createApiKey } from '../../services/apiKey';
+import RichEditor from '../../components/other/RichEditor';
 import TextArea from 'antd/es/input/TextArea';
-import { displayStatus } from '../services/notification'
+import { displayStatus } from '../../services/notification'
 
 function AddApiLink() {
     const { updateBreadcrumb } = useOutletContext();

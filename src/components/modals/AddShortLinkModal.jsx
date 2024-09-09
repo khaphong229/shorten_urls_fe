@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, notification } from "antd";
-import { createLink } from "../services/shorten";
+import { createLink } from "../../services/shorten";
 
 function AddShortLinkModal() {
   const [form] = Form.useForm();

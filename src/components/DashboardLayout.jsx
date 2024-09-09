@@ -29,9 +29,9 @@ import {
 import { Link, Outlet } from 'react-router-dom';
 
 const { Content, Footer, Header, Sider } = Layout;
-import { useAuth } from '../services/useAuth';
+import { useAuth } from '../utils/useAuth';
 import { createLink } from '../services/shorten';
-import ShortenLink from './ShortenLink';
+import ShortenLink from './modals/ShortenLink';
 import { displayStatus } from '../services/notification';
 
 function getItem(label, key, icon, children) {

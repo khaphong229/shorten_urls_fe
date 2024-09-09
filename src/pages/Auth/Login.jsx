@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import HeaderComponent from '../components/HeaderComponent';
-import FooterComponent from '../components/FooterComponent';
+import HeaderComponent from '../../components/HomePage/HeaderComponent';
+import FooterComponent from '../../components/HomePage/FooterComponent';
 import { Button, Checkbox, Flex, Form, Input, notification, Spin } from 'antd';
-import { login } from '../services/auth';
+import { login } from '../../services/auth';
 import { useNavigate } from 'react-router-dom';
 import { LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Link from 'antd/es/typography/Link';
-import { useAuth } from '../services/useAuth';
-import { displayStatus } from '../services/notification';
+import { useAuth } from '../../utils/useAuth';
+import { displayStatus } from '../../services/notification';
 function Login() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();

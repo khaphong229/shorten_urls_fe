@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import BoxComponent from '../components/BoxComponent';
+import BoxComponent from '../../components/shared/BoxComponent';
 
 function DashBoard() {
     const { updateBreadcrumb } = useOutletContext();

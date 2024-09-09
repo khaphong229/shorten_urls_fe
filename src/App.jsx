@@ -1,22 +1,20 @@
 import { Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './services/useAuth';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { AuthProvider } from './utils/useAuth';
+import { ProtectedRoute } from './components/other/ProtectedRoute';
 import './App.css';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import DashBoard from './pages/DashBoard';
-import ApiLink from './pages/ApiLink';
-import ShortLink from './pages/ShortLink';
+import Home from './pages/Home/Home';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import DashBoard from './pages/Home/DashBoard';
+import ApiLink from './pages/ApiLink/ApiLink';
+import ShortLink from './pages/ShortLink/ShortLink';
 import Quick from './pages/Quick';
-import ChangePassword from './pages/ChangePassword';
-import Profile from './pages/Profile';
+import ChangePassword from './pages/Auth/ChangePassword';
+import Profile from './pages/User/Profile';
 import NotFound from './pages/NotFound';
-import DashboardLayout from './components/GeneralComponent';
-import AddApiLink from './pages/AddApiLink';
-import UpdateApiLink from './pages/UpdateApiLink';
-import AddShortLink from './pages/AddShortLink'
-import UpdateShortLink from './pages/UpdateShortLink'
+import DashboardLayout from './components/DashboardLayout';
+import AddApiLink from './pages/ApiLink/AddApiLink';
+import UpdateApiLink from './pages/ApiLink/UpdateApiLink';
 import NavigateLink from './pages/NavigateLink'
 
 function App() {
@@ -40,8 +38,8 @@ function App() {
                         <Route path="edit/:id" element={<UpdateApiLink />} />
                     </Route>
                     <Route path="/shortlink" element={<ShortLink />} >
-                        <Route path="add" element={<AddShortLink />} />
-                        <Route path="edit/:id" element={<UpdateShortLink />} />
+                        {/* <Route path="add" element={<AddShortLink />} />
+                        <Route path="edit/:id" element={<UpdateShortLink />} /> */}
                     </Route>
                     <Route path="quick" element={<Quick />} />
                     <Route

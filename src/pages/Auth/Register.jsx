@@ -1,6 +1,6 @@
 import React from 'react';
-import HeaderComponent from '../components/HeaderComponent';
-import FooterComponent from '../components/FooterComponent';
+import HeaderComponent from '../../components/HomePage/HeaderComponent';
+import FooterComponent from '../../components/HomePage/FooterComponent';
 import {
     Button,
     Checkbox,
@@ -11,9 +11,9 @@ import {
     notification,
     Row,
 } from 'antd';
-import { register } from '../services/auth';
+import { register } from '../../services/auth';
 import { Link, useNavigate } from 'react-router-dom';
-import { displayStatus } from '../services/notification';
+import { displayStatus } from '../../services/notification';
 
 
 const tailFormItemLayout = {

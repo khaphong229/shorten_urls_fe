@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Form, Input, Tag, message } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
-import { displayStatus } from '../services/notification'
+import { displayStatus } from '../../services/notification'
 
 const ShortenLink = ({ isVisible, handleOk, handleCancel, form, onCreate, shortenedLink, valueShort, mode }) => { 
     function onCopy(url) {
