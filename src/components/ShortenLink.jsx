@@ -1,71 +1,81 @@
-import { Button, Input, Modal, Radio } from 'antd';
-import React, { useState } from 'react';
-import { Form } from 'react-router-dom';
+import React from 'react';
+import { Modal, Form, Input, Tag, message } from 'antd';
+import { CopyOutlined } from '@ant-design/icons';
+import { displayStatus } from '../services/notification'
 
-function ShortenLink() {
-    const [form] = Form.useForm();
-    const [formValues, setFormValues] = useState();
-    const [open, setOpen] = useState(false);
-
-    const onCreate = (values) => {
-        console.log('Received values of form: ', values);
-        setFormValues(values);
-        setOpen(false);
-    };
+const ShortenLink = ({ isVisible, handleOk, handleCancel, form, onCreate, shortenedLink, valueShort, mode }) => { 
+    function onCopy(url) {
+        navigator.clipboard.writeText(url).then(()=> {
+            displayStatus('success', 'Sao chép liên kết thành công!')
+        }, ()=> {
+            displayStatus('error', 'Sao chép liên kết thất bại!')
+        })
+    }
     return (
-        <>
-            <Button type="primary" onClick={() => setOpen(true)}>
-                New Collection
-            </Button>
-            <pre>{JSON.stringify(formValues, null, 2)}</pre>
-            <Modal
-                open={open}
-                title="Create a new collection"
-                okText="Create"
-                cancelText="Cancel"
-                okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
-                onCancel={() => setOpen(false)}
-                destroyOnClose
-                modalRender={(dom) => (
-                    <Form
-                        layout="vertical"
-                        form={form}
-                        name="form_in_modal"
-                        initialValues={{ modifier: 'public' }}
-                        clearOnDestroy
-                        onFinish={(values) => onCreate(values)}
-                    >
-                        {dom}
-                    </Form>
-                )}
+        <Modal
+            open={isVisible}
+            title="Tạo liên kết nhanh"
+            okText={mode === 'edit' ? 'Cập nhật' : 'Tạo'}
+            cancelText="Hủy"
+            onCancel={handleCancel}
+            onOk={() => form.submit()}
+            destroyOnClose
+        >
+            <Form
+                layout="vertical"
+                form={form}
+                name="form_in_modal"
+                initialValues={{ modifier: 'public' }}
+                onFinish={onCreate}
             >
                 <Form.Item
-                    name="title"
-                    label="Title"
+                    name="alias"
+                    label="Alias (Tùy chọn)"
                     rules={[
                         {
-                            required: true,
-                            message: 'Please input the title of collection!',
+                            required: false,
+                            pattern: /^[a-zA-Z0-9_-]{5,10}$/,
+                            message: 'Alias phải từ 5-10 ký tự, không chứa ký tự đặc biệt',
                         },
                     ]}
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item name="description" label="Description">
-                    <Input type="textarea" />
-                </Form.Item>
                 <Form.Item
-                    name="modifier"
-                    className="collection-create-form_last-form-item"
+                    name="original_link"
+                    label="Liên kết gốc"
+                    // hidden={valueShort ? true : false}
+                    rules={[
+                        {
+                            required: true,
+                            type: 'url',
+                            message: 'Vui lòng nhập URL hợp lệ',
+                        },
+                    ]}
                 >
-                    <Radio.Group>
-                        <Radio value="public">Public</Radio>
-                        <Radio value="private">Private</Radio>
-                    </Radio.Group>
+                    <Input
+                        disabled={mode==='edit'}
+                    />
                 </Form.Item>
-            </Modal>
-        </>
+                {shortenedLink && (
+                    <Form.Item label="Liên kết rút gọn">
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Input value={shortenedLink} readOnly style={{ marginRight: '8px' }} />
+                            <Tag
+                                color='blue'
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => onCopy(shortenedLink)}
+                                title='Copy liên kết'
+                            >
+                                <CopyOutlined style={{fontSize: '15px', margin: '6px 0px'}}/>
+                            </Tag>
+                        </div>
+                    </Form.Item>
+                )}
+            </Form>
+        </Modal>
+
     );
-}
+};
 
 export default ShortenLink;

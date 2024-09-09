@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Link from 'antd/es/typography/Link';
 import { useAuth } from '../services/useAuth';
-
+import { displayStatus } from '../services/notification';
 function Login() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -24,28 +24,13 @@ function Login() {
             const data = await login(userData);
             if (data.status < 400) {
                 authLogin(data.data.accessToken); // Use the login function from useAuth
-                notification.success({
-                    message: 'Thành công',
-                    description: data.data.message,
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('success', 'Đăng nhập thành công')
                 navigate('/dashboard');
             } else {
-                notification.warning({
-                    message: 'Thất bại',
-                    description: data.response.data.message,
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('warning', data.response.data.message)
             }
         } catch (error) {
-            notification.error({
-                message: 'Lỗi',
-                description: 'Lỗi trong khi đăng nhập tài khoản',
-                duration: 2,
-                placement: 'top',
-            });
+            displayStatus('error', 'Lỗi trong khi đăng nhập tài khoản')
         } finally {
             setLoading(false);
         }

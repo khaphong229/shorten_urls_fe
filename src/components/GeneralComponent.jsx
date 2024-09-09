@@ -31,6 +31,8 @@ import { Link, Outlet } from 'react-router-dom';
 const { Content, Footer, Header, Sider } = Layout;
 import { useAuth } from '../services/useAuth';
 import { createLink } from '../services/shorten';
+import ShortenLink from './ShortenLink';
+import { displayStatus } from '../services/notification';
 
 function getItem(label, key, icon, children) {
     return {
@@ -50,14 +52,6 @@ function getProfile(label, key, icon, children) {
     };
 }
 
-function showNotification(type, mess, des) {
-    return notification[type]({
-        message: mess,
-        description: des,
-        duration: 2,
-        placement: 'top',
-    });
-}
 
 const DashboardLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -66,6 +60,7 @@ const DashboardLayout = () => {
     const { logout } = useAuth();
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
+    const [shortenedLink, setShortenedLink] = useState(null);
 
     const updateBreadcrumb = useCallback((newBreadcrumbs) => {
         setBreadcrumb([
@@ -107,14 +102,16 @@ const DashboardLayout = () => {
             alias: alias,
         };
         try {
-            const res = await createLink(data);
+            const res = await createLink(data);;
             if (res.data.success) {
-                showNotification('success', 'Thành công', res.data.message);
+                displayStatus('success', res.data.message);
+                const url = `${window.location.origin}/${res.data.data.alias}`;
+                setShortenedLink(url)
             } else {
-                showNotification('warning', 'Thất bại', res.data.message);
+                displayStatus('warning', res.data.message);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Lỗi trong quá trình rút gọn');
+            displayStatus('error', 'Lỗi trong quá trình rút gọn');
         }
     };
 
@@ -235,42 +232,7 @@ const DashboardLayout = () => {
                     kết, kết trái từ Share Link.
                 </Footer>
             </Layout>
-            <Modal
-                open={open}
-                title="Tạo liên kết nhanh"
-                okText="Tạo"
-                cancelText="Hủy"
-                okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
-                onCancel={() => setOpen(false)}
-                destroyOnClose
-                modalRender={(dom) => (
-                    <Form
-                        layout="vertical"
-                        form={form}
-                        name="form_in_modal"
-                        initialValues={{ modifier: 'public' }}
-                        clearOnDestroy
-                        onFinish={(values) => onCreate(values)}
-                    >
-                        {dom}
-                    </Form>
-                )}
-            >
-                <Form.Item
-                    name="original_link"
-                    label="Liên kết gốc"
-                    rules={[{ required: true, message: 'Vui lòng nhập link' }]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    name="alias"
-                    label="Alias (Tùy chọn)"
-                    rules={[{ required: false }]}
-                >
-                    <Input />
-                </Form.Item>
-            </Modal>
+            <ShortenLink isVisible={open} handleOk={()=>form.submit()} handleCancel={()=>setOpen(false)} form={form} onCreate={onCreate} shortenedLink={shortenedLink}/>
         </Layout>
     );
 };

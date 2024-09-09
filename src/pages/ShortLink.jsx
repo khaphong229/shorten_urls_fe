@@ -16,15 +16,19 @@ import {
     notification,
     Spin,
     Popconfirm,
+    Form,
 } from 'antd';
 import { BulbOutlined, CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import BoxComponent from '../components/BoxComponent';
 import {
+    createLink,
     deleteShortLink,
     getAllShortLink,
+    getShortLinkById,
     searchShortLink,
 } from '../services/shorten'
-
+import { displayStatus } from '../services/notification';
+import ShortenLink from '../components/ShortenLink';
 const { Search } = Input;
 
 function ShortLink() {
@@ -33,11 +37,35 @@ function ShortLink() {
     const { updateBreadcrumb } = useOutletContext();
     const location = useLocation();
     const navigate = useNavigate();
-
+    const [open, setOpen] = useState(false);
+    const [form] = Form.useForm();
+    const [shortenedLink, setShortenedLink] = useState(null);
+    const [formValue, setFormValue] = useState({})
+    const [mode, setMode]=useState(null)
     useEffect(() => {
         fetchApiKey();
         updateBreadcrumbBasedOnPath();
     }, [location]);
+
+    const onCreate = async (values) => {
+        const { original_link, alias } = values;
+        const data = {
+            original_url: original_link,
+            alias: alias,
+        };
+        try {
+            const res = await createLink(data);;
+            if (res.data.success) {
+                displayStatus('success', res.data.message);
+                const url = `${window.location.origin}/${res.data.data.alias}`;
+                setShortenedLink(url)
+            } else {
+                displayStatus('warning', res.data.message);
+            }
+        } catch (error) {
+            displayStatus('error', 'Lỗi trong quá trình rút gọn');
+        }
+    };
 
     const fetchApiKey = async () => {
         setLoading(true);
@@ -50,11 +78,11 @@ function ShortLink() {
                     setLoading(false);
                 }, 500);
             } else {
-                showNotification('warning', 'Thất bại', res.data.message);
+                displayStatus('warning', res.data.message);
                 setLoading(false);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Vui lòng thử lại bạn nhé');
+            displayStatus('error', 'Vui lòng thử lại bạn nhé');
             setLoading(false);
         }
     };
@@ -69,11 +97,11 @@ function ShortLink() {
                     setLoading(false);
                 }, 500);
             } else {
-                showNotification('warning', 'Thất bại', 'Tìm kiếm thất bại');
+                displayStatus('warning', 'Tìm kiếm thất bại');
                 setLoading(false);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Lỗi trong quá trình tìm kiếm');
+            displayStatus('error', 'Lỗi trong quá trình tìm kiếm');
             setLoading(false);
         }
     };
@@ -84,33 +112,24 @@ function ShortLink() {
             console.log(res);
             
             if (res.data.success) {
-                showNotification('success', 'Thành công', 'Xóa thành công');
+                displayStatus('success', 'Xóa thành công');
                 fetchApiKey();
             } else {
-                showNotification('warning', 'Thất bại', res.data.message);
+                displayStatus('warning',  res.data.message);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Vui lòng thử lại');
+            displayStatus('error', 'Vui lòng thử lại');
         }
     }, []);
 
     const handleCopy = (alias) => {
         const url = `${window.location.origin}/${alias}`;
         navigator.clipboard.writeText(url).then(() => {
-            showNotification('success', 'Thành công', 'Đã sao chép liên kết');
+            displayStatus('success', 'Đã sao chép liên kết');
         }, () => {
-            showNotification('error', 'Lỗi', 'Không thể sao chép liên kết');
+            displayStatus('error', 'Không thể sao chép liên kết');
         });
     }
-
-    const showNotification = (type, message, description) => {
-        notification[type]({
-            message,
-            description,
-            duration: 2,
-            placement: 'top',
-        });
-    };
 
     const updateBreadcrumbBasedOnPath = () => {
         const path = location.pathname;
@@ -136,7 +155,33 @@ function ShortLink() {
         updateBreadcrumb(breadcrumbData);
     };
 
-    const handleAdd = () => navigate('/shortlink/add');
+    const handleAdd = () => {
+        form.resetFields(); 
+        setFormValue({});
+        setShortenedLink(null);
+        setMode('add')
+        setOpen(true);
+    }
+    
+
+    const handleUpdate = useCallback(async (id) => {
+        setMode('edit')
+        try {
+            const res = await getShortLinkById(id);
+            if (res.data.success) {
+                const linkData = res.data.data;
+                const valueShort = {
+                    original_link: linkData.original_url,
+                    alias: linkData.alias,
+                };
+                form.setFieldsValue(valueShort); 
+                setFormValue(valueShort);
+            }
+            setOpen(true); 
+        } catch (error) {
+            displayStatus('error', 'Đang lỗi vui lòng thử lại');
+        }
+    }, []);
 
     const columns = [
         {
@@ -173,19 +218,24 @@ function ShortLink() {
                     >
                         <CopyOutlined />
                     </Tag>
-                    <Tag color="purple" title="Sửa liên kết">
-                        <Link to={`/shortlink/edit/${record.key}`}>
-                            <EditOutlined />
-                        </Link>
+                    <Tag color="purple"
+                        title="Sửa liên kết"
+                        style={{ cursor: 'pointer'}}
+                        onClick={()=>{
+                        setOpen(true)
+                        handleUpdate(record.key)
+                    }}>
+                        <EditOutlined />
                     </Tag>
                     <Popconfirm
                         title="Xóa liên kết"
+                        
                         description="Bạn chắc chắn muốn xóa liên kết này?"
                         onConfirm={() => deleteShort(record.key)}
                         okText="Xóa"
                         cancelText="Hủy"
                     >
-                        <Tag color="red" title="Xóa liên kết">
+                        <Tag color="red" title="Xóa liên kết" style={{ cursor: 'pointer'}}>
                             <DeleteOutlined />
                         </Tag>
                     </Popconfirm>
@@ -211,7 +261,11 @@ function ShortLink() {
             {location.pathname === '/shortlink' && (
                 <>
                     <BoxComponent>
-                        <p className="mb-5">Danh sách liên kết</p>
+                        <div className='flex items-center gap-5'>
+                            <p className="mb-5">Danh sách liên kết</p>
+                            <Tag color='blue' className='mb-5'>Bạn đang dùng api link4m</Tag>
+                        </div>
+                            
                         <div className="flex justify-between">
                             <Search
                                 placeholder="Nhập alias liên kết bạn muốn tìm"
@@ -241,6 +295,9 @@ function ShortLink() {
                             />
                         </Spin>
                     </BoxComponent>
+                    {open && (
+                        <ShortenLink isVisible={open} handleOk={()=>form.submit()} handleCancel={()=>setOpen(false)} form={form} onCreate={onCreate} shortenedLink={shortenedLink} valueShort={formValue} mode={mode}></ShortenLink>
+                    )}
                 </>
             )}
         </>

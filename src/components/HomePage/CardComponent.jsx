@@ -23,7 +23,7 @@ function CardComponent({ title, color, content }) {
     const { bg, border } = colorClasses[color] || colorClasses['blue'];
 
     return (
-        <div className={`w-1/4 p-4 rounded-lg ${bg} ${border} border-2`}>
+        <div className={`md:w-1/4 p-4 rounded-lg ${bg} ${border} border-2`}>
             <h2 className="text-xl font-bold mb-2">{title}</h2>
             <p>{content}</p>
         </div>

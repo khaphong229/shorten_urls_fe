@@ -25,7 +25,7 @@ import {
     deleteApiKey,
     searchApiKey,
 } from '../services/apiKey';
-
+import {displayStatus} from '../services/notification'
 const { Search } = Input;
 
 function ApiLink() {
@@ -50,11 +50,11 @@ function ApiLink() {
                     setLoading(false);
                 }, 500);
             } else {
-                showNotification('warning', 'Thất bại', res.data.message);
+                displayStatus('warning', res.data.message);
                 setLoading(false);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Vui lòng thử lại bạn nhé');
+            displayStatus('error', 'Vui lòng thử lại bạn nhé');
             setLoading(false);
         }
     };
@@ -69,11 +69,11 @@ function ApiLink() {
                     setLoading(false);
                 }, 500);
             } else {
-                showNotification('warning', 'Thất bại', 'Tìm kiếm thất bại');
+                displayStatus('warning', 'Tìm kiếm thất bại');
                 setLoading(false);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Lỗi trong quá trình tìm kiếm');
+            displayStatus('error', 'Lỗi trong quá trình tìm kiếm');
             setLoading(false);
         }
     };
@@ -82,13 +82,13 @@ function ApiLink() {
         try {
             const res = await deleteApiKey(route);
             if (res.data.success) {
-                showNotification('success', 'Thành công', 'Xóa thành công');
+                displayStatus('success', 'Xóa thành công');
                 fetchApiKey();
             } else {
-                showNotification('warning', 'Thất bại', res.data.message);
+                displayStatus('warning', res.data.message);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Vui lòng thử lại');
+            displayStatus('error', 'Vui lòng thử lại');
         }
     }, []);
 
@@ -96,28 +96,19 @@ function ApiLink() {
         try {
             const res = await editStatusApiKey(route, data);
             if (res.data.success) {
-                showNotification(
+                displayStatus(
                     'success',
-                    'Thành công',
                     'Cập nhật trạng thái thành công',
                 );
                 fetchApiKey();
             } else {
-                showNotification('warning', 'Thất bại', res.data.message);
+                displayStatus('warning', res.data.message);
             }
         } catch (error) {
-            showNotification('error', 'Lỗi', 'Vui lòng thử lại');
+            displayStatus('error', 'Vui lòng thử lại');
         }
     }, []);
 
-    const showNotification = (type, message, description) => {
-        notification[type]({
-            message,
-            description,
-            duration: 2,
-            placement: 'top',
-        });
-    };
 
     const updateBreadcrumbBasedOnPath = () => {
         const path = location.pathname;

@@ -13,6 +13,8 @@ import {
 } from 'antd';
 import { register } from '../services/auth';
 import { Link, useNavigate } from 'react-router-dom';
+import { displayStatus } from '../services/notification';
+
 
 const tailFormItemLayout = {
     wrapperCol: {
@@ -55,12 +57,7 @@ function Register() {
             const status = data.status;
 
             if (status < 400) {
-                notification.success({
-                    message: 'Thành công',
-                    description: data.data.message,
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('success', data.data.message)
                 return navigate('/login');
             } else {
                 let message = '';
@@ -72,20 +69,10 @@ function Register() {
                         message += '\n';
                     });
                 }
-                notification.warning({
-                    message: 'Thất bại',
-                    description: message,
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('warning', message)
             }
         } catch (error) {
-            notification.error({
-                message: 'Lỗi',
-                description: 'Lỗi trong quá trình đăng ký tài khoản.',
-                duration: 2,
-                placement: 'top',
-            });
+            displayStatus('error', 'Lỗi trong quá trình đăng ký tài khoản.')
         }
     };
 

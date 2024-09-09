@@ -5,6 +5,7 @@ import { Form, Input, Button, Select, notification, Spin } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { getApiKeyById, updateApiKey } from '../services/apiKey';
 import { LoadingOutlined } from '@ant-design/icons';
+import { displayStatus } from '../services/notification';
 
 function UpdateApiLink() {
     const { updateBreadcrumb } = useOutletContext();
@@ -45,23 +46,11 @@ function UpdateApiLink() {
                         setLoading(false);
                     }, 500);
                 } else {
-                    notification.error({
-                        message: 'Lỗi',
-                        description:
-                            'Không thể lấy dữ liệu API. Vui lòng thử lại.',
-                        duration: 2,
-                        placement: 'top',
-                    });
+                    displayStatus('warning', 'Không thể lấy dữ liệu API. Vui lòng thử lại.')
                     setLoading(false);
                 }
             } catch (error) {
-                notification.error({
-                    message: 'Lỗi',
-                    description:
-                        'Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng thử lại.',
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('error', 'Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng thử lại.')
                 setLoading(false);
             }
         };
@@ -84,28 +73,13 @@ function UpdateApiLink() {
             setLoading(true);
             const res = await updateApiKey(id, data);
             if (res.data && res.data.success) {
-                notification.success({
-                    message: 'Thành công',
-                    description: 'Cập nhật API thành công',
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('success', 'Cập nhật API thành công')
                 navigate('/link');
             } else {
-                notification.warning({
-                    message: 'Thất bại',
-                    description: res.data.message || 'Cập nhật API thất bại',
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('warning', res.data.message || 'Cập nhật API thất bại' )
             }
         } catch (error) {
-            notification.error({
-                message: 'Lỗi',
-                description: 'Đã xảy ra lỗi khi cập nhật. Vui lòng thử lại.',
-                duration: 2,
-                placement: 'top',
-            });
+            displayStatus('error', 'Đã xảy ra lỗi khi cập nhật. Vui lòng thử lại.')
         } finally {
             setLoading(false);
         }

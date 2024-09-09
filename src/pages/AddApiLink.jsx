@@ -5,6 +5,7 @@ import { Form, Input, Button, Select, notification, Spin } from 'antd';
 import { createApiKey } from '../services/apiKey';
 import RichEditor from '../components/RichEditor';
 import TextArea from 'antd/es/input/TextArea';
+import { displayStatus } from '../services/notification'
 
 function AddApiLink() {
     const { updateBreadcrumb } = useOutletContext();
@@ -39,28 +40,13 @@ function AddApiLink() {
         try {
             const res = await createApiKey(data);
             if (res.status < 400) {
-                notification.success({
-                    message: 'Thành công',
-                    description: res.data.message,
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('success', res.data.message)
                 navigate('/link');
             } else {
-                notification.warning({
-                    message: 'Thất bại',
-                    description: res.response.data.message,
-                    duration: 2,
-                    placement: 'top',
-                });
+                displayStatus('warning', res.response.data.message)
             }
         } catch (error) {
-            notification.error({
-                message: 'Lỗi',
-                description: 'Vui lòng thử lại nhé',
-                duration: 2,
-                placement: 'top',
-            });
+            displayStatus('error', 'Vui lòng thử lại nhé')
         } finally {
             setLoading(false);
         }
